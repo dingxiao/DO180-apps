@@ -1,0 +1,27 @@
+Use the following steps to create and test a containerized Nexus server both locally and in OpenShift:
+
+Create a container image that starts an instance of a Nexus server:
+
+The /home/student/DO180/labs/comprehensive-review/image directory contains files for building the container image. Execute the get-nexus-bundle.sh script to retrieve the Nexus server files.
+
+Write a Containerfile that containerizes the Nexus server. The Containerfile must be located in the /home/student/DO180/labs/comprehensive-review/image directory. The Containerfile must also:
+
+Use a base image of ubi8/ubi:8.3 and set an arbitrary maintainer.
+
+Set the ARG variable NEXUS_VERSION to 2.14.3-02, and set the environment variable NEXUS_HOME to /opt/nexus.
+
+Install the java-1.8.0-openjdk-devel package.
+
+Run a command to create a nexus user and group. They both have a UID and GID of 1001. Change the permissions of the ${NEXUS_HOME}/ directory to 775.
+
+Unpack the nexus-2.14.3-02-bundle.tar.gz file to the ${NEXUS_HOME}/ directory. Add the nexus-start.sh to the same directory.
+
+Run a command, ln -s ${NEXUS_HOME}/nexus-${NEXUS_VERSION} ${NEXUS_HOME}/nexus2, to create a symlink in the container. Run a command to recursively change the ownership of the Nexus home directory to nexus:nexus.
+
+Make the container run as the nexus user, and set the working directory to /opt/nexus.
+
+Define a volume mount point for the /opt/nexus/sonatype-work container directory. The Nexus server stores data in this directory.
+
+Set the default container command to nexus-start.sh.
+
+There are two *.snippet files in the /home/student/DO180/labs/comprehensive-review/image directory that provide the commands needed to create the nexus account and install Java. Use the files to assist you in writing the Containerfile.
